@@ -1,15 +1,15 @@
 import Head from "next/head";
 import React from "react";
 
-export default function Home() {
+export default function About() {
   return (
     <>
         <Head>
-          <title>Contact page</title>
+          <title>About page</title>
         </Head>
 
         <main>
-          <h1 className="flex text-3xl font-bold">Contact</h1>
+          <h1 className="flex text-3xl font-bold">About</h1>
         </main>
     </>
   );

@@ -1,12 +1,9 @@
-import type { AppProps } from "next/app";
-import "~/public/assets/styles/globals.css";
-
 import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import routes from "~/const/router"; // Import the routes
 import { useRouter } from "next/router";
 import Layout from "~/components/Layout";
-
+import type { AppProps } from "next/app";
+import "~/assets/styles/globals.css";
 
 const useRouterScroll = ({
   behavior = "smooth" as ScrollBehavior,
