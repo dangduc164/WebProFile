@@ -33,7 +33,7 @@ export default function Home() {
     last_name: "Nguyen Dang",
     frist_name: "Duc",
     job: "Frontend Developer",
-    birthday: "11/10/2001",
+    birthday: "16/04/2001",
     email: "ducden164@gmail.com",
     address:
       "Phuc Cau village, Thuy Huong commune, Chuong My district, Hanoi city",
@@ -77,8 +77,8 @@ export default function Home() {
                     <img
                       src={dataProfile?.avatar}
                       alt="avatar"
-                      className="rounded-full max-w-[150px] max-h-[150px]"
-                      width={150}
+                      className="rounded-full max-w-[142px] max-h-[142px]"
+                      width={142}
                     />
                     <div className="mt-3">
                       <h4>
@@ -86,9 +86,6 @@ export default function Home() {
                       </h4>
                       <p className="text-gray-600 mb-1">
                         {dataProfile?.position_application}
-                      </p>
-                      <p className="text-gray-700 font-size-sm">
-                        {dataProfile?.address}
                       </p>
                     </div>
                   </div>
@@ -113,9 +110,9 @@ export default function Home() {
                         target={
                           item?.link && item?.link !== "" ? "_blank" : "_self"
                         }
-                        className="text-sm text-gray-600 hover:text-[#5bc956]"
+                        className="text-sm text-gray-600 hover:text-[#5bc956] w-[150px] line-clamp-1"
                       >
-                        More
+                        {item?.link}
                       </Link>
                     </li>
                   ))}
