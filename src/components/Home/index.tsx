@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import getUserInfo, { intData } from "~/redux/infor";
+import moment from "moment";
 
 export default function Home() {
   const listLinkSocial = [
@@ -29,24 +32,58 @@ export default function Home() {
     },
   ];
 
-  const dataProfile = {
-    last_name: "Nguyen Dang",
-    frist_name: "Duc",
-    job: "Frontend Developer",
-    birthday: "16/04/2001",
-    email: "ducden164@gmail.com",
-    address:
-      "Phuc Cau village, Thuy Huong commune, Chuong My district, Hanoi city",
-    phone_number: "0967771606",
-    avatar: "https://bootdey.com/img/Content/avatar/avatar7.png",
-    position_application: "Fullstack Developer",
-  };
+  // const dataProfile = {
+  //   last_name: "Nguyen Dang",
+  //   frist_name: "Duc",
+  //   job: "Frontend Developer",
+  //   birthday: "16/04/2001",
+  //   email: "ducden164@gmail.com",
+  //   address:
+  //     "Phuc Cau village, Thuy Huong commune, Chuong My district, Hanoi city",
+  //   phone_number: "0967771606",
+  //   avatar: "https://bootdey.com/img/Content/avatar/avatar7.png",
+  //   position_application: "Fullstack Developer",
+  // };
 
   const careerGoals = `- In the short term: Efforts in the shortest time to meet job requirements. Become an official employee of the company. \n
 - Learn and absorb new technological knowledge. \n
 - In the long term: Become a professional programmer and stay with the company for a long time. Promote and become a Leader.
 `;
 
+  const [dataProfile, setdataProfile] = useState<intData>();
+  const [avatar, setavatar] = useState<string>("");
+
+  useEffect(() => {
+    const a = getUserInfo(1);
+    console.log(
+      a.then((res) => {
+        setdataProfile(res);
+      })
+    );
+    readTextFile(dataProfile?.infor?.image_avatar);
+  }, []);
+
+  const readTextFile = (file: string) => {
+    const rawFile = new XMLHttpRequest();
+    rawFile.open("GET", file, false);
+    rawFile.onreadystatechange = function () {
+      if (rawFile.readyState === 4) {
+        console.log("rawFile", rawFile);
+
+        if (rawFile.status === 200 || rawFile.status == 0) {
+          const allText = rawFile.responseText;
+          console.log(allText);
+
+          setavatar(allText);
+          console.log(avatar);
+          // if (dataProfile && dataProfile.infor) {
+
+          // }
+        }
+      }
+    };
+    rawFile.send(null);
+  };
   return (
     <>
       <div className="container mx-auto px-4">
@@ -75,17 +112,15 @@ export default function Home() {
                 <div className="flex-auto p-6">
                   <div className="flex flex-col items-center text-center">
                     <img
-                      src={dataProfile?.avatar}
+                      src={avatar}
                       alt="avatar"
                       className="rounded-full max-w-[142px] max-h-[142px]"
                       width={142}
                     />
                     <div className="mt-3">
-                      <h4>
-                        {dataProfile?.last_name} {dataProfile?.frist_name}
-                      </h4>
+                      <h4>{dataProfile?.infor?.full_name}</h4>
                       <p className="text-gray-600 mb-1">
-                        {dataProfile?.position_application}
+                        {dataProfile?.infor?.position_application}
                       </p>
                     </div>
                   </div>
@@ -131,7 +166,7 @@ export default function Home() {
                       <h6 className="mb-0">Full Name</h6>
                     </div>
                     <div className="sm:w-3/4 pr-4 pl-4 text-gray-600">
-                      {`${dataProfile?.last_name} ${dataProfile?.frist_name} `}
+                      {dataProfile?.infor?.full_name}
                     </div>
                   </div>
                   <hr />
@@ -140,7 +175,8 @@ export default function Home() {
                       <h6 className="mb-0">Date of birth</h6>
                     </div>
                     <div className="sm:w-3/4 pr-4 pl-4 text-gray-600">
-                      {dataProfile?.birthday}
+                      {dataProfile?.infor?.day}/{dataProfile?.infor?.month}/
+                      {dataProfile?.infor?.year}
                     </div>
                   </div>
                   <hr />
@@ -149,7 +185,7 @@ export default function Home() {
                       <h6 className="mb-0">Email</h6>
                     </div>
                     <div className="sm:w-3/4 pr-4 pl-4 text-gray-600">
-                      {dataProfile?.email}
+                      {dataProfile?.infor?.email}
                     </div>
                   </div>
                   <hr />
@@ -158,7 +194,7 @@ export default function Home() {
                       <h6 className="mb-0">Phone</h6>
                     </div>
                     <div className="sm:w-3/4 pr-4 pl-4 text-gray-600">
-                      {dataProfile?.phone_number}
+                      {dataProfile?.infor?.phone_number}
                     </div>
                   </div>
                   <hr />
@@ -167,52 +203,30 @@ export default function Home() {
                       <h6 className="mb-0">Address</h6>
                     </div>
                     <div className="sm:w-3/4 pr-4 pl-4 text-gray-600">
-                      {dataProfile?.address}
+                      {dataProfile?.infor?.address}
                     </div>
                   </div>
                   <hr />
                 </div>
               </div>
 
-              <div className="relative flex flex-col min-w-0 rounded break-words border bg-white border-1 border-gray-300 mb-3">
-                <div className="p-6">
-                  <h3 className="text-2xl text-teal-500 text-semibold border-b-2 border-teal-500 mb-2">
-                    <i className="fa-solid fa-briefcase mr-2"></i>
-                    Career Goals
-                  </h3>
-                  <div
-                    className="whitespace-pre-wrap leading-normal"
-                    dangerouslySetInnerHTML={{ __html: careerGoals }}
-                  ></div>
-                </div>
-              </div>
-
-              <div className="relative flex flex-col min-w-0 rounded break-words border bg-white border-1 border-gray-300 mb-3">
-                <div className="p-6">
-                  <h3 className="text-2xl text-teal-500 text-semibold border-b-2 border-teal-500 mb-2">
-                  <i className="fa-solid fa-school mr-2"></i>
-                    Education
-                  </h3>
-                  <div
-                    className="whitespace-pre-wrap leading-normal"
-                    dangerouslySetInnerHTML={{ __html: careerGoals }}
-                  ></div>
-                </div>
-              </div>
-
-              <div className="relative flex flex-col min-w-0 rounded break-words border bg-white border-1 border-gray-300 mb-3">
-                <div className="p-6">
-                  <h3 className="text-2xl text-teal-500 text-semibold border-b-2 border-teal-500 mb-2">
-                    <i className="fa-solid fa-briefcase mr-2"></i>
-                    Career Goals
-                  </h3>
-                  <div
-                    className="whitespace-pre-wrap leading-normal"
-                    dangerouslySetInnerHTML={{ __html: careerGoals }}
-                  ></div>
-                </div>
-              </div>
-
+              {dataProfile &&
+                dataProfile.content &&
+                dataProfile?.content.map((item, index) => (
+                  <div key={index} className="relative flex flex-col min-w-0 rounded break-words border bg-white border-1 border-gray-300 mb-3">
+                    <div className="p-6">
+                      <h3 className="text-2xl text-teal-500 text-semibold border-b-2 border-teal-500 mb-2">
+                        <i className="fa-solid fa-briefcase mr-2"></i>
+                        {item?.title}
+                      </h3>
+                      <div
+                        className="whitespace-pre-wrap leading-normal"
+                        dangerouslySetInnerHTML={{ __html: item?.description }}
+                      >
+                      </div>
+                    </div>
+                  </div>
+                ))}
             </div>
           </div>
         </div>

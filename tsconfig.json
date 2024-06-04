@@ -2,8 +2,9 @@
   "compilerOptions": {
     "paths": {
       "~/*": ["./src/*"],
+      "~/redux/*": ["./redux/*"],
       "~/assets/*": ["./public/assets/*"],
-    },
+  },
     "lib": [
       "dom",
       "dom.iterable",

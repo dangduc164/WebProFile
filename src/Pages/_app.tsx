@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import Layout from "~/components/Layout";
 import type { AppProps } from "next/app";
 import "~/assets/styles/globals.css";
+import "~/assets/styles/loading.css";
 
 const useRouterScroll = ({
   behavior = "smooth" as ScrollBehavior,
