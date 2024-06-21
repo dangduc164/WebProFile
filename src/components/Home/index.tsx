@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import getUserInfo, { intData } from "~/redux/infor";
 import moment from "moment";
+import Header from "../Header";
 
 export default function Home() {
   const listLinkSocial = [
@@ -45,25 +46,28 @@ export default function Home() {
   //   position_application: "Fullstack Developer",
   // };
 
-  const careerGoals = `- In the short term: Efforts in the shortest time to meet job requirements. Become an official employee of the company. \n
-- Learn and absorb new technological knowledge. \n
-- In the long term: Become a professional programmer and stay with the company for a long time. Promote and become a Leader.
-`;
+  //   const careerGoals = `- In the short term: Efforts in the shortest time to meet job requirements. Become an official employee of the company. \n
+  // - Learn and absorb new technological knowledge. \n
+  // - In the long term: Become a professional programmer and stay with the company for a long time. Promote and become a Leader.
+  // `;
 
   const [dataProfile, setdataProfile] = useState<intData>();
   const [avatar, setavatar] = useState<string>("");
 
   useEffect(() => {
     const a = getUserInfo(1);
-    console.log(
-      a.then((res) => {
-        setdataProfile(res);
-      })
-    );
-    readTextFile(dataProfile?.infor?.image_avatar);
+    a.then((res) => {
+      setdataProfile(res);
+    });
+
+    // readTextFile(
+    //   "http://127.0.0.1:8000/assets/images/avatar/665ec99f109594.72637259.txt"
+    // );
   }, []);
 
   const readTextFile = (file: string) => {
+    console.log("file", file);
+
     const rawFile = new XMLHttpRequest();
     rawFile.open("GET", file, false);
     rawFile.onreadystatechange = function () {
@@ -79,6 +83,8 @@ export default function Home() {
           // if (dataProfile && dataProfile.infor) {
 
           // }
+        } else {
+          console.log("error");
         }
       }
     };
@@ -89,7 +95,7 @@ export default function Home() {
       <div className="container mx-auto px-4">
         <div className="main-body">
           {/* Breadcrumb */}
-          <nav aria-label="breadcrumb" className="main-breadcrumb">
+          {/* <nav aria-label="breadcrumb" className="main-breadcrumb">
             <ol className="flex flex-wrap list-reset pt-3 pb-3 py-4 px-4 mb-4 bg-gray-200 rounded">
               <li className="inline-block px-2 py-2 text-gray-700">
                 <Link href="/">Home</Link>
@@ -104,18 +110,22 @@ export default function Home() {
                 <Link href="/About">About</Link>
               </li>
             </ol>
-          </nav>
+          </nav> */}
+          <Header props={dataProfile} />
           {/* /Breadcrumb */}
-          <div className="flex flex-wrap gutters-sm mx-[-1rem]">
+          <div className="flex flex-wrap gutters-sm mx-[-1rem] mt-5">
             <div className="w-full md:w-1/3 px-4 mb-3">
               <div className="relative flex flex-col min-w-0 rounded break-words border bg-white border-1 border-gray-300">
                 <div className="flex-auto p-6">
                   <div className="flex flex-col items-center text-center">
                     <img
-                      src={avatar}
+                      src={
+                        process.env.NEXT_PUBLIC_API_URL +
+                        dataProfile?.infor?.image_avatar
+                      }
                       alt="avatar"
-                      className="rounded-full max-w-[142px] max-h-[142px]"
-                      width={142}
+                      className="rounded-full w-[150px] h-[150px] object-cover max-w-[150px] max-h-[150px]"
+                      width={150}
                     />
                     <div className="mt-3">
                       <h4>{dataProfile?.infor?.full_name}</h4>
@@ -128,33 +138,29 @@ export default function Home() {
               </div>
               <div className="relative flex flex-col min-w-0 rounded break-words border bg-white border-1 border-gray-300 mt-3">
                 <ul className="flex flex-col pl-0 mb-0 border rounded border-gray-300 ">
-                  {listLinkSocial?.map((item) => (
-                    <li
-                      key={item?.id}
-                      className="relative block py-3 px-6 -mb-px border border-r-0 border-l-0 border-gray-300 no-underline flex justify-between items-center flex-wrap"
+                  <li className="relative block py-3 px-6 -mb-px border border-r-0 border-l-0 border-gray-300 no-underline flex justify-between items-center flex-wrap">
+                    <h6 className="mb-0">
+                      {/* <span
+                        className="inline-block align-middle mr-2"
+                        dangerouslySetInnerHTML={{ __html: item?.icon }}
+                      ></span> */}
+                      {/* {item?.label} */}
+                    </h6>
+                    <Link
+                      // href={item?.link}
+                      // target={
+                      //   item?.link && item?.link !== "" ? "_blank" : "_self"
+                      // }
+                      href={"#"}
+                      className="text-sm text-gray-600 hover:text-[#5bc956] w-[150px] line-clamp-1"
                     >
-                      <h6 className="mb-0">
-                        <span
-                          className="inline-block align-middle mr-2"
-                          dangerouslySetInnerHTML={{ __html: item?.icon }}
-                        ></span>
-                        {item?.label}
-                      </h6>
-                      <Link
-                        href={item?.link}
-                        target={
-                          item?.link && item?.link !== "" ? "_blank" : "_self"
-                        }
-                        className="text-sm text-gray-600 hover:text-[#5bc956] w-[150px] line-clamp-1"
-                      >
-                        {item?.link}
-                      </Link>
-                    </li>
-                  ))}
+                      {/* {item?.link} */}
+                    </Link>
+                  </li>
                 </ul>
               </div>
             </div>
-            <div className="md:w-2/3 pr-4 pl-4">
+            <div className="md:w-2/3 w-full pr-4 pl-4">
               <div className="relative flex flex-col min-w-0 rounded break-words border bg-white border-1 border-gray-300 mb-3">
                 <div className="flex-auto p-6">
                   <h3 className="text-2xl text-teal-500 text-semibold border-b-2 border-teal-500 mb-2">
@@ -213,17 +219,19 @@ export default function Home() {
               {dataProfile &&
                 dataProfile.content &&
                 dataProfile?.content.map((item, index) => (
-                  <div key={index} className="relative flex flex-col min-w-0 rounded break-words border bg-white border-1 border-gray-300 mb-3">
+                  <div
+                    key={index}
+                    className="relative flex flex-col min-w-0 rounded break-words border bg-white border-1 border-gray-300 mb-3"
+                  >
                     <div className="p-6">
                       <h3 className="text-2xl text-teal-500 text-semibold border-b-2 border-teal-500 mb-2">
                         <i className="fa-solid fa-briefcase mr-2"></i>
                         {item?.title}
                       </h3>
                       <div
-                        className="whitespace-pre-wrap leading-normal"
+                        className=""
                         dangerouslySetInnerHTML={{ __html: item?.description }}
-                      >
-                      </div>
+                      ></div>
                     </div>
                   </div>
                 ))}

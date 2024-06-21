@@ -55,7 +55,6 @@ export const fetchApi = async <T>(
       opts.data = body;
     }
     let fetchdata = await axios(opts);
-    console.log('fetchdata', fetchdata)
     return fetchdata.data;
     // if (fetchdata.data.code !== 200) {
     // }
